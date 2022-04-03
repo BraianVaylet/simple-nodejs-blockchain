@@ -15,7 +15,7 @@ Este proyecto es una simple aplicación desarrollada con node.js donde se constr
 
 ✅ Se debe visualizar por consola los bloques que se agregan a la clase Blockchain.
 
-### [simple-blockchain-v1](https://github.com/BraianVaylet/simple-nodejs-blockchain/tree/simple-blockchain-v1)
+### 🌿 [simple-blockchain-v1](https://github.com/BraianVaylet/simple-nodejs-blockchain/tree/simple-blockchain-v1)
 
 ```bash
 C:\simple-nodejs-blockchain>node index.js>node index.js
@@ -49,7 +49,7 @@ Block -
         -------------------------------------
 ```
 
-### [simple-blockchain-v2](https://github.com/BraianVaylet/simple-nodejs-blockchain/tree/simple-blockchain-v2)
+### 🌿 [simple-blockchain-v2](https://github.com/BraianVaylet/simple-nodejs-blockchain/tree/simple-blockchain-v2)
 
 ```bash
 C:\simple-nodejs-blockchain>node index.js
