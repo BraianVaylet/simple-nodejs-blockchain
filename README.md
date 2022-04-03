@@ -49,7 +49,7 @@ Block -
         -------------------------------------
 ```
 
-[simple-blockchain-v2](https://github.com/BraianVaylet/simple-nodejs-blockchain/tree/simple-blockchain-v2)
+### [simple-blockchain-v2](https://github.com/BraianVaylet/simple-nodejs-blockchain/tree/simple-blockchain-v2)
 
 ```bash
 C:\simple-nodejs-blockchain>node index.js
