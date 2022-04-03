@@ -15,7 +15,7 @@ Este proyecto es una simple aplicación desarrollada con node.js donde se constr
 ✅ Se debe visualizar por consola los 3 bloques que se agregan a la clase Blockchain.
 
 ```bash
-C:\>node index.js
+C:\simple-nodejs-blockchain>node index.js>node index.js
 Block -
         hash: 89d33a17fd10eb9cdd3a2dc1426cf1356202a1f3dbf04c27ac0fba58a48f6b30
         height: 0
