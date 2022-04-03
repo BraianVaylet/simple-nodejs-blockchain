@@ -1,57 +1,76 @@
 const SHA256 = require('crypto-js/sha256')
-const hex2ascii = require('hex2ascii')
+
+// Una manera de gestionar el algoritmo de minado,
+// si muchos bloques se generan en un tiempo corto, se puede aumentar la dificultad.
+const DIFFICULTY = 3
+// La tasa de minado entre bloques.
+const MINE_RATE = 3000
 
 class Block {
-  constructor (data) {
-    this.hash = null // hash del bloque.
-    this.height = 0 // posición o numero de bloque de la cadena.
-    this.body = Buffer.from(JSON.stringify(data).toString('hex')) // cuerpo del bloque.
-    this.time = 0 // tiempo en el que se genera el bloque y se añade a la cadena.
-    this.previousBlockHash = null // hash del bloque previo.
+  constructor ({
+    time,
+    previousHash,
+    hash,
+    height, // posición o numero de bloque de la cadena.
+    body,
+    nonce, // numero de vueltas que da el algoritmo de minado hasta encontrar el hash.
+    difficulty
+  }) {
+    this.time = time
+    this.previousHash = previousHash
+    this.hash = hash
+    this.height = height
+    this.body = body // Buffer.from(JSON.stringify(body).toString('hex'))
+    this.nonce = nonce
+    this.difficulty = difficulty
   }
 
-  // validamos que el bloque sea correcto.
-  validate () {
-    const self = this
-    return new Promise((resolve, reject) => {
-      const currentHash = self.hash
-
-      self.hash = SHA256(JSON.stringify({ ...self, hash: null })).toString()
-
-      if (currentHash !== self.hash) {
-        return resolve(false)
-      }
-
-      resolve(true)
+  static get genesis () {
+    const time = new Date('2009-03-01').getTime()
+    return new this({
+      time,
+      previousHash: undefined,
+      hash: 'genesis_hash',
+      height: 0,
+      body: 'Genesis Block',
+      nonce: 0,
+      difficulty: DIFFICULTY
     })
   }
 
-  // obtenemos los datos del bloque.
-  getBlockData () {
-    const self = this
-    return new Promise((resolve, reject) => {
-      const encodedData = self.body
-      const decodedData = hex2ascii(encodedData)
-      const dataObject = JSON.parse(decodedData)
+  static mineBlock ({
+    previousBlock,
+    body
+  }) {
+    const { hash: previousHash, height: previousHeight } = previousBlock
+    const height = previousHeight + 1
+    let { difficulty } = previousBlock
+    let hash
+    let time
+    let nonce = 0
 
-      if (dataObject === 'Genesis Block') { // Genesis Block es el primer bloque de la cadena. (no tiene un hash previo)
-        reject(new Error('This is the Genesis Block'))
-      }
+    do {
+      time = Date.now()
+      nonce += 1
+      difficulty = previousBlock.time + MINE_RATE > time ? difficulty + 1 : difficulty - 1
+      hash = SHA256(previousHash + time + body + nonce + difficulty).toString()
+    } while (hash.substring(0, difficulty) !== '0'.repeat(difficulty))
 
-      resolve(dataObject)
-    })
+    return new this({ time, previousHash, hash, height, body, nonce, difficulty })
   }
 
-  // mostrar por consola la información del bloque.
+  // Mostrar por consola la información del bloque.
   toString () {
-    const { hash, height, body, time, previousBlockHash } = this
-    return `Block -
-        hash: ${hash}
-        height: ${height}
-        body: ${body}
-        time: ${time}
-        previousBlockHash: ${previousBlockHash}
-        -------------------------------------`
+    const { time, previousHash, hash, height, body, nonce, difficulty } = this
+    return `🧱 Block - 
+            Time: ${time}
+            Previous Hash: ${previousHash}
+            Hash: ${hash}
+            height: ${height}
+            body: ${body}
+            Nonce: ${nonce}
+            Difficulty: ${difficulty}
+            -------------------------------------`
   }
 }
 
